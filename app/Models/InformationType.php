@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class InformationType extends Model
 {
     use HasFactory;
+
+    protected $fillable = ["name"];
+
+    public function contactInformations()
+    {
+        return $this->hasMany(Contact::class, "contact_id");
+    }
 }
