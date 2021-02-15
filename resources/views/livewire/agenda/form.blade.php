@@ -26,7 +26,7 @@
             </div>
             <div class="col-span-6 sm:col-span-2">
                 <x-jet-label for="new_information_type" value="{{ __('Novo Tipo de Informação (email, telefone, etc.)') }}" />
-                <x-jet-input id="new_information_type" type="text" class="mt-1 block w-full" wire:model.defer="newInformationType" autocomplete="new_information_type" required/>
+                <x-jet-input id="new_information_type" type="text" class="mt-1 block w-full" wire:model.defer="newInformationType" autocomplete="new_information_type"/>
                 <x-jet-input-error for="new_information_type" class="mt-2" />
             </div>
             <div class="col-span-6 sm:col-span-2">
@@ -44,7 +44,7 @@
                 <x-jet-label for="informationType-{{$key}}" value="{{ __('Tipo de Informação') }}" />
                 <select id="informationType-{{$key}}" type="text" class="mt-1 block w-full" wire:model.defer="contactInfo.{{$key}}.information_type_id" autocomplete="informationType" required>
                     @foreach($contactTypes as $type)
-                        <option value="{{$type->id}}">{{$type->name}}</option>
+                        <option value="{{$type->id}}" {{!isset($info["id"]) ? 'selected' : ''}}>{{$type->name}}</option>
                     @endforeach
                 </select>
                 <x-jet-input-error for="informationType-{{$key}}" class="mt-2" />
@@ -74,10 +74,10 @@
             <x-jet-button class="mr-2 bg-red-600 text-white" wire:click="delete()" type="button">
                 {{ __('Deletar') }}
             </x-jet-button>
+            @endif
             <x-jet-button class="mr-2" wire:click="cancel()" type="button">
                 {{ __('Cancelar') }}
             </x-jet-button>
-            @endif
             <x-jet-button>
                 {{ __('Salvar') }}
             </x-jet-button>

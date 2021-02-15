@@ -144,7 +144,9 @@ class Form extends Component
 
     public function addContactInfo()
     {
-        $this->contactInfo[] = new ContactInformation();
+        $newContactInformation = new ContactInformation();
+        $newContactInformation->information_type_id = 1;
+        $this->contactInfo[] = $newContactInformation;
     }
 
     public function removeContactInfo($key)

@@ -21,14 +21,13 @@
             <th class="px-4 py-2">Nome</th>
             <th class="px-4 py-2">Contatos</th>
             <th class="px-4 py-2">Endereço</th>
-            <th class="px-4 py-2">Data de Nascimento</th>
-            <th class="px-4 py-2">Ações</th>     
+            <th class="px-4 py-2">Data de Nascimento</th>    
         </tr>
         </thead>
         <tbody>
         @foreach ($list as $item)
             <tr @if($loop->even)class="bg-grey"@endif>
-                <td class="border px-4 py-2">{{ $item->name }}</td>       
+                <td class="border px-4 py-2"><a href="{{route('contact.edit', $item)}}">{{ $item->name }}</a></td>       
                 <td class="border px-4 py-2">
                   @foreach($item->contactInformations as $info)
                     {{$info->information}} - {{$info->informationType->name}} <br>
@@ -36,9 +35,6 @@
                 </td>       
                 <td class="border px-4 py-2">{{ $item->address }}</td>       
                 <td class="border px-4 py-2">{{ $item->birthdate->format("d/m/Y") }}</td>       
-                <td class="border px-4 py-2"> 
-                  <a href="{{route('contact.edit', $item)}}" class="bg-yellow-100 text-yellow-600 px-6 rounded-full">Editar</a>
-                </td>       
             </tr>
         @endforeach
         </tbody>
