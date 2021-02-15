@@ -13,6 +13,6 @@ class InformationType extends Model
 
     public function contactInformations()
     {
-        return $this->hasMany(Contact::class, "contact_id");
+        return $this->hasMany(ContactInformation::class, "information_type_id");
     }
 }

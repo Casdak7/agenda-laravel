@@ -15,8 +15,11 @@ class Form extends Component
     // Determina se formulário está criando ou editando
     public $updateMode = false;
 
-    //Modelo para atualização
+    //Modelo para atualização do contato
     public $contact, $contactTypes, $contactInfo;
+
+    //Novo tipo de informação
+    public $newInformationType;
 
     protected $rules = [
         'name' => 'required',
@@ -79,6 +82,7 @@ class Form extends Component
 
         $this->contact = Contact::create($this->getData());
         
+        //Cria cada uma das informações associadas ao contato recém criado
         foreach ($this->contactInfo as $key => $info) {
             ContactInformation::create(array_merge($info, ["contact_id" => $this->contact->id]));
         }
@@ -91,7 +95,6 @@ class Form extends Component
     public function edit(Contact $contact)
     {
         $this->updateMode = true;
-        $this->contact = $contact;
         $this->setData($contact);
     }
     
@@ -99,6 +102,27 @@ class Form extends Component
     {   
         $this->validate();
         $this->contact->update($this->getData());
+
+        //Salva as informações existentes e cria as novas informações de contato
+        foreach ($this->contactInfo as $key => $info) {
+            if(isset($info["id"])){
+                $info = ContactInformation::find($info["id"]);
+                $info->save();
+            }else{
+                ContactInformation::create(array_merge($info, ["contact_id" => $this->contact->id]));
+            }
+        }
+
+        //Coleção para facilitar comparações
+        $contactInfoCollection = collect($this->contactInfo)->pluck('id');
+
+        //Deleta as informações que foram removidas
+        foreach($this->contact->contactInformations as $info){
+            if(!$contactInfoCollection->contains($info->id)){
+                $info->delete();
+            }
+        }
+
         $this->updateMode = false;
         session()->flash('success', "Contato salvo com sucesso");
         return redirect(route("dashboard"));
@@ -126,5 +150,16 @@ class Form extends Component
     public function removeContactInfo($key)
     {
         unset($this->contactInfo[$key]);
+    }
+
+    public function addInfoType()
+    {
+        $informationType = InformationType::create(["name" => $this->newInformationType]);
+        
+        $this->newInformationType = "";
+
+        $this->contactTypes->push($informationType);
+
+        $this->emit("info_created");
     }
 }

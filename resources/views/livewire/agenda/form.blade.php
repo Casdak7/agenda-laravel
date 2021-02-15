@@ -24,8 +24,18 @@
                 <x-jet-input id="birthdate" type="date" class="mt-1 block w-full" wire:model.defer="birthdate" autocomplete="birthdate" required/>
                 <x-jet-input-error for="birthdate" class="mt-2" />
             </div>
-            <div class="col-span-6 sm:col-span-6">
-                <x-jet-button class="mr-2 bg-green-600 text-white" wire:click="addContactInfo()" type="button">
+            <div class="col-span-6 sm:col-span-2">
+                <x-jet-label for="new_information_type" value="{{ __('Novo Tipo de Informação (email, telefone, etc.)') }}" />
+                <x-jet-input id="new_information_type" type="text" class="mt-1 block w-full" wire:model.defer="newInformationType" autocomplete="new_information_type" required/>
+                <x-jet-input-error for="new_information_type" class="mt-2" />
+            </div>
+            <div class="col-span-6 sm:col-span-2">
+                <x-jet-button class="mr-2 my-auto bg-green-600 text-white" wire:click="addInfoType()" type="button">
+                    {{ __('Adicionar Novo Tipo de Informação') }}
+                </x-jet-button>
+            </div>
+            <div class="col-span-6 sm:col-span-2">
+                <x-jet-button class="bg-blue-600 text-white" wire:click="addContactInfo()" type="button">
                     {{ __('Adicionar Nova Informação de Contato') }}
                 </x-jet-button>
             </div>
@@ -55,6 +65,9 @@
         <x-slot name="actions">
             <x-jet-action-message class="mr-3" on="saved">
                 {{ __('Contato Salvo.') }}
+            </x-jet-action-message>
+            <x-jet-action-message class="mr-3" on="info_created">
+                {{ __('Novo Tipo de Informação Criada.') }}
             </x-jet-action-message>
 
             @if($updateMode)
